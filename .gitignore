@@ -1,23 +1,30 @@
-# Cargo & Rust
-/target/
-/**/*.rs.bk
+# === Rust & Cargo ===
+**/target/
+**/*.rs.bk
 **/*.swp
 Cargo.lock
 
-# IDEs and tooling
-.idea/
-/.vscode/
-*.log
+# === Dependency Folders ===
+**/node_modules/
+**/.venv/
+**/.cargo/
 
-# OS files
+# === Build Artifacts / Output ===
+**/*.tmp
+**/*.out
+**/*.log
+
+# === IDEs / Editors ===
+.vscode/
+.idea/
+*.code-workspace
+
+# === OS / Environment ===
 .DS_Store
 Thumbs.db
-
-# Tests/output
-*.tmp
-*.out
-
-# Environment files
 .env
-.venv/
-node_modules/
+
+# === Misc ===
+*.bak
+*.old
+*.orig
