@@ -1,0 +1,23 @@
+# Cargo & Rust
+/target/
+/**/*.rs.bk
+**/*.swp
+Cargo.lock
+
+# IDEs and tooling
+.idea/
+/.vscode/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Tests/output
+*.tmp
+*.out
+
+# Environment files
+.env
+.venv/
+node_modules/

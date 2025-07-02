@@ -1,0 +1,9 @@
+/home/projects/pIDEstyx/ide-core/apps/editor/target/debug/deps/once_cell-ac7571acfe866441.d: /home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/lib.rs /home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/imp_std.rs /home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/race.rs
+
+/home/projects/pIDEstyx/ide-core/apps/editor/target/debug/deps/libonce_cell-ac7571acfe866441.rlib: /home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/lib.rs /home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/imp_std.rs /home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/race.rs
+
+/home/projects/pIDEstyx/ide-core/apps/editor/target/debug/deps/libonce_cell-ac7571acfe866441.rmeta: /home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/lib.rs /home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/imp_std.rs /home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/race.rs
+
+/home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/lib.rs:
+/home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/imp_std.rs:
+/home/piestyx/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/src/race.rs:
