@@ -1,13 +1,39 @@
-use tree_sitter::{Node, Parser, Range, Tree};
+use tree_sitter::{Node, Parser, Tree};
 use std::fmt;
+use serde::Serialize;
 
 // Language modules
 use tree_sitter_cpp as tscpp;
-use tree_sitter_csharp as tscs;
+use tree_sitter_c_sharp as tscs;
 use tree_sitter_javascript as tsjs;
 use tree_sitter_python as tspy;
 use tree_sitter_rust as tsrs;
 use tree_sitter_typescript::{language_tsx, language_typescript};
+
+#[derive(Debug, Clone, Serialize)]
+pub struct SerializableRange {
+    pub start_row: usize,
+    pub start_col: usize,
+    pub end_row: usize,
+    pub end_col: usize,
+}
+
+impl From<tree_sitter::Range> for SerializableRange {
+    fn from(r: tree_sitter::Range) -> Self {
+        Self {
+            start_row: r.start_point.row,
+            start_col: r.start_point.column,
+            end_row: r.end_point.row,
+            end_col: r.end_point.column,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct HighlightSpan {
+    pub range: SerializableRange,
+    pub highlight_type: String,
+}
 
 #[derive(Debug, Clone)]
 pub enum SupportedLanguage {
@@ -62,12 +88,6 @@ impl fmt::Display for SupportedLanguage {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct HighlightSpan {
-    pub range: Range,
-    pub highlight_type: String,
-}
-
 #[derive(Debug)]
 pub enum SyntaxError {
     ParseFailed,
@@ -98,10 +118,11 @@ impl SyntaxEngine {
     }
 
     pub fn extract_highlights(&mut self, source: &str) -> Vec<HighlightSpan> {
-        match self.parse(source) {
-            Ok(tree) => Self::extract_highlights_from_tree(&tree),
-            Err(_) => Vec::new(),
-        }
+        let tree = match self.parser.parse(source, None) {
+            Some(t) => t,
+            None => return vec![],
+        };
+        Self::extract_highlights_from_tree(&tree)
     }
 
     pub fn extract_highlights_from_tree(tree: &Tree) -> Vec<HighlightSpan> {
@@ -111,7 +132,7 @@ impl SyntaxEngine {
         fn recurse(node: Node, highlights: &mut Vec<HighlightSpan>) {
             if node.is_named() {
                 highlights.push(HighlightSpan {
-                    range: node.range(),
+                    range: node.range().into(),
                     highlight_type: node.kind().into(),
                 });
             }

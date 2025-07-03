@@ -169,7 +169,7 @@ impl TextBuffer {
     pub fn parse_syntax(&self, language: SupportedLanguage) -> Option<tree_sitter::Tree> {
         let mut engine = SyntaxEngine::new(language);
         let text = self.rope.to_string();
-        engine.parse(&text)
+        engine.parse(&text).ok()
     }
 
     pub fn extract_highlights(&self, language: SupportedLanguage) -> Vec<HighlightSpan> {

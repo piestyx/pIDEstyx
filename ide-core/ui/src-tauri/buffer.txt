@@ -1,0 +1,13 @@
+// Welcome to pIDEstyx IDE!
+
+fn main() {
+    let x = 42;
+}
+
+def run_chat(self, context: str, known: list[str]) -> str:
+        import requests
+        system_prompt, instruction_prompt = build_prompts(
+            model_name=self.model_name,
+            context=context,
+            known=known
+        ) 
