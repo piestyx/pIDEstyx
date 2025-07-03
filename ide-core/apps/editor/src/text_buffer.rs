@@ -3,6 +3,8 @@ use std::fs::{self, File};
 use std::io::{BufReader, BufWriter, Write};
 use std::path::{Path, PathBuf};
 use anyhow::{Context, Result};
+use crate::syntax::SupportedLanguage;
+use crate::syntax::{SyntaxEngine, HighlightSpan};
 
 #[derive(Debug, Clone)]
 pub struct BufferMetadata {
@@ -164,12 +166,16 @@ impl TextBuffer {
         Ok(())
     }
 
-    pub fn parse_syntax(&self) -> Option<tree_sitter::Tree> {
-        use crate::syntax::SyntaxEngine;
-        
-        let mut engine = SyntaxEngine::new();
+    pub fn parse_syntax(&self, language: SupportedLanguage) -> Option<tree_sitter::Tree> {
+        let mut engine = SyntaxEngine::new(language);
         let text = self.rope.to_string();
         engine.parse(&text)
+    }
+
+    pub fn extract_highlights(&self, language: SupportedLanguage) -> Vec<HighlightSpan> {
+        let mut engine = SyntaxEngine::new(language);
+        let text = self.rope.to_string();
+        engine.extract_highlights(&text)
     }
 }
 
@@ -248,11 +254,38 @@ mod tests {
         buf.set_line(0, "def foo():\n").unwrap();
         buf.append_line("    return 42").unwrap();
 
-        let tree = buf.parse_syntax().expect("Failed to parse");
+        let tree = buf.parse_syntax(SupportedLanguage::Python).expect("Failed to parse");
         let root = tree.root_node();
 
         assert_eq!(root.kind(), "module");
         assert!(root.named_child_count() > 0);
+    }
+
+    use crate::syntax::{SyntaxEngine, SupportedLanguage};
+    #[test]
+    fn test_syntax_parse_rust() {
+        let mut engine = SyntaxEngine::new(SupportedLanguage::Rust);
+        let source = r#"fn main() { println!("Hello"); }"#;
+        let tree = engine.parse(source);
+        assert!(tree.is_some());
+    }
+
+    #[test]
+    fn test_syntax_parse_typescript() {
+        let mut engine = SyntaxEngine::new(SupportedLanguage::TypeScript);
+        let source = r#"function greet(name: string): void { console.log(name); }"#;
+        let tree = engine.parse(source);
+        assert!(tree.is_some());
+    }
+
+    #[test]
+    fn test_extract_highlights_python() {
+        let mut buf = TextBuffer::empty();
+        buf.set_line(0, "def foo():\n").unwrap();
+        buf.append_line("    return 42").unwrap();
+
+        let highlights = buf.extract_highlights(SupportedLanguage::Python);
+        assert!(highlights.iter().any(|h| h.highlight_type == "function_definition"));
     }
 }
 
